@@ -5,8 +5,9 @@ import SysTaskLog from '@/entities/admin/sys-task-log.entity';
 import { Between, Like, Repository } from 'typeorm';
 import { UAParser } from 'ua-parser-js';
 import { LoginLogInfo, TaskLogInfo } from './log.class';
-import { PageSearchTaskLogDto } from './log.dto';
+import { PageSearchLoginLogDto } from './log.dto';
 import { SysUserService } from '../user/user.service';
+import { IpService } from '@/shared/services/ip.service';
 
 @Injectable()
 export class SysLogService {
@@ -16,16 +17,20 @@ export class SysLogService {
     @InjectRepository(SysTaskLog)
     private taskLogRepository: Repository<SysTaskLog>,
     private userService: SysUserService,
+    private ipService: IpService,
   ) {}
 
   /**
    * 记录登录日志
    */
   async saveLoginLog(uid: number, ip: string, ua: string): Promise<void> {
+    const address = await this.ipService.getAddress(ip);
+
     await this.loginLogRepository.save({
       ip,
       userId: uid,
       ua,
+      address,
     });
   }
 
@@ -39,11 +44,12 @@ export class SysLogService {
   /**
    * 分页加载日志信息
    */
-  async pageGetLoginLog(dto: PageSearchTaskLogDto): Promise<LoginLogInfo[]> {
-    const { page, pageSize, username, ip, time } = dto;
+  async pageGetLoginLog(dto: PageSearchLoginLogDto): Promise<LoginLogInfo[]> {
+    const { page, pageSize, username, ip, address, time } = dto;
 
     const where = {
       ...(ip ? { ip: Like(`%${ip}%`) } : null),
+      ...(address ? { address: Like(`%${address}%`) } : null),
       ...(time ? { createdAt: Between(time[0], time[1]) } : null),
     };
 
@@ -67,6 +73,7 @@ export class SysLogService {
       return {
         id: e.login_log_id,
         ip: e.login_log_ip,
+        address: e.login_log_address,
         os: `${u.os.name} ${u.os.version}`,
         browser: `${u.browser.name} ${u.browser.version}`,
         time: e.login_log_created_at,

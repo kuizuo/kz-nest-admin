@@ -7,6 +7,9 @@ export class OnlineUserInfo {
   @ApiProperty({ description: '登录IP' })
   ip: string;
 
+  @ApiProperty({ description: '登录地点' })
+  address: string;
+
   @ApiProperty({ description: '用户名' })
   username: string;
 

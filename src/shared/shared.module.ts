@@ -8,9 +8,10 @@ import { QQService } from './services/qq.service';
 import { RedisModule } from './redis/redis.module';
 import { RedisService } from './services/redis.service';
 import { UtilService } from './services/util.service';
+import { IpService } from './services/ip.service';
 
 // common provider list
-const providers = [UtilService, RedisService, EmailService, QQService];
+const providers = [UtilService, RedisService, EmailService, QQService, IpService];
 
 /**
  * 全局共享模块

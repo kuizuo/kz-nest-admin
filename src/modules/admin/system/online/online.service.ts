@@ -65,7 +65,7 @@ export class SysOnlineService {
     const rootUserId = await this.userService.findRootUserId();
     const result = await this.entityManager.query(
       `
-      SELECT sys_login_log.created_at, sys_login_log.ip, sys_login_log.ua, sys_user.id, sys_user.username, sys_user.nick_name
+      SELECT sys_login_log.created_at, sys_login_log.ip, sys_login_log.address, sys_login_log.ua, sys_user.id, sys_user.username, sys_user.nick_name
         FROM sys_login_log 
         INNER JOIN sys_user ON sys_login_log.user_id = sys_user.id 
         WHERE sys_login_log.created_at IN (SELECT MAX(created_at) as createdAt FROM sys_login_log GROUP BY user_id)
@@ -80,6 +80,7 @@ export class SysOnlineService {
         return {
           id: e.id,
           ip: e.ip,
+          address: e.address,
           username: `${e.nick_name}（${e.username}）`,
           isCurrent: currentUid === e.id,
           time: e.created_at,

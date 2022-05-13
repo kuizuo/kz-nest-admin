@@ -13,6 +13,11 @@ export class PageSearchLoginLogDto extends PageOptionsDto {
   @IsOptional()
   ip: string;
 
+  @ApiProperty({ description: '登录地点' })
+  @IsString()
+  @IsOptional()
+  address: string;
+
   @ApiProperty({ description: '登录时间' })
   @IsOptional()
   time: string[];

@@ -16,6 +16,10 @@ export default class SysLoginLog extends BaseEntity {
   @ApiProperty()
   ip: string;
 
+  @Column({ nullable: true })
+  @ApiProperty()
+  address: string;
+
   @Column({ type: 'datetime', nullable: true })
   @ApiProperty()
   time: Date;
