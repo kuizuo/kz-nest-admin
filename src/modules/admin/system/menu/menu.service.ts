@@ -160,7 +160,9 @@ export class SysMenuService {
     }
     if (!isEmpty(result)) {
       result.forEach((e) => {
-        permission = concat(permission, e.permission.split(','));
+        if (e.permission) {
+          permission = concat(permission, e.permission.split(','));
+        }
       });
       permission = uniq(permission);
     }
