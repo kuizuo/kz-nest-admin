@@ -4,7 +4,7 @@ import { concat, includes, isEmpty, uniq } from 'lodash';
 import { ROOT_ROLE_ID } from '@/modules/admin/admin.constants';
 import { ApiException } from '@/common/exceptions/api.exception';
 import SysMenu from '@/entities/admin/sys-menu.entity';
-import { IsNull, Like, Not, Repository } from 'typeorm';
+import { In, IsNull, Like, Not, Repository } from 'typeorm';
 import { SysRoleService } from '../role/role.service';
 import { MenuItemAndParentInfoResult } from './menu.class';
 import { CreateMenuDto, SearchMenuDto } from './menu.dto';
@@ -147,14 +147,14 @@ export class SysMenuService {
     if (includes(roleIds, this.rootRoleId)) {
       result = await this.menuRepository.find({
         permission: Not(IsNull()),
-        type: 2,
+        type: In([1, 2]),
       });
     } else {
       result = await this.menuRepository
         .createQueryBuilder('menu')
         .innerJoinAndSelect('sys_role_menu', 'role_menu', 'menu.id = role_menu.menu_id')
         .andWhere('role_menu.role_id IN (:...roldIds)', { roldIds: roleIds })
-        .andWhere('menu.type = 2')
+        .andWhere('menu.type IN (1,2)')
         .andWhere('menu.permission IS NOT NULL')
         .getMany();
     }
