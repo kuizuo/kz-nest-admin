@@ -33,6 +33,7 @@ const providers = [UtilService, RedisService, EmailService, QQService, IpService
       }),
       inject: [ConfigService],
     }),
+    // redis
     RedisModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -50,6 +51,7 @@ const providers = [UtilService, RedisService, EmailService, QQService, IpService
         transport: {
           host: configService.get<string>('email.host'),
           port: configService.get<number>('email.port'),
+          ignoreTLS: true,
           secure: true,
           auth: {
             user: configService.get<string>('email.user'),

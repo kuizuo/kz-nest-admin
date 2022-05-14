@@ -1,10 +1,11 @@
 import { DynamicModule, ExistingProvider, Module } from '@nestjs/common';
 import { AdminModule } from 'src/modules/admin/admin.module';
 import { SysLogService } from 'src/modules/admin/system/log/log.service';
+import { EmailJob } from './jobs/email.job';
 import { HttpRequestJob } from './jobs/http-request.job';
 import { SysLogClearJob } from './jobs/sys-log-clear.job';
 
-const providers = [SysLogClearJob, HttpRequestJob];
+const providers = [SysLogClearJob, HttpRequestJob, EmailJob];
 
 /**
  * auto create alias

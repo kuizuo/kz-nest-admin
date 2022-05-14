@@ -1,5 +1,6 @@
 export default {
   rootRoleId: 1,
+  appName: process.env.APP_NAME,
   mysql: {
     type: 'mysql',
     host: process.env.MYSQL_HOST,
@@ -33,13 +34,10 @@ export default {
     path: process.env.SWAGGER_PATH,
     title: process.env.SWAGGER_TITLE,
   },
-  mailer: {
+  email: {
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    secure: false,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 };

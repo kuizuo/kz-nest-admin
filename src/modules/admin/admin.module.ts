@@ -4,8 +4,8 @@ import { AccountModule } from './account/account.module';
 import { ADMIN_PREFIX } from './admin.constants';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LoginModule } from './login/login.module';
-// import { NetdiskModule } from './netdisk/netdisk.module';
 import { SystemModule } from './system/system.module';
+import { ToolsModule } from './tools/tools.module';
 
 /**
  * Admin模块，所有API都需要加入/admin前缀
@@ -19,6 +19,7 @@ import { SystemModule } from './system/system.module';
         children: [
           { path: 'account', module: AccountModule },
           { path: 'sys', module: SystemModule },
+          { path: 'tools', module: ToolsModule },
         ],
       },
       // like this url /captcha/img  /login
@@ -31,6 +32,7 @@ import { SystemModule } from './system/system.module';
     LoginModule,
     AccountModule,
     SystemModule,
+    ToolsModule,
   ],
   providers: [
     {
