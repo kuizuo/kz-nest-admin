@@ -27,9 +27,15 @@ async function bootstrap() {
     // bufferLogs: true,
   });
   app.useLogger(app.get(LoggerService));
-
   app.enableCors({ origin: '*', credentials: true });
-  app.useStaticAssets({ root: path.join(__dirname, 'public') });
+  app.useStaticAssets({ root: path.join(__dirname, '..', 'public') });
+  // https://github.com/fastify/fastify-multipart/
+  await app.register(require('@fastify/multipart'), {
+    limits: {
+      fileSize: 1000000,
+      files: 1,
+    },
+  });
 
   // 全局请求添加prefix
   app.setGlobalPrefix(PREFIX);

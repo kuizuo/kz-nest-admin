@@ -6,6 +6,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { LoginModule } from './login/login.module';
 import { SystemModule } from './system/system.module';
 import { ToolsModule } from './tools/tools.module';
+import { UploadModule } from './upload/upload.module';
 
 /**
  * Admin模块，所有API都需要加入/admin前缀
@@ -20,6 +21,7 @@ import { ToolsModule } from './tools/tools.module';
           { path: 'account', module: AccountModule },
           { path: 'sys', module: SystemModule },
           { path: 'tools', module: ToolsModule },
+          { path: '', module: UploadModule },
         ],
       },
       // like this url /captcha/img  /login
@@ -33,6 +35,7 @@ import { ToolsModule } from './tools/tools.module';
     AccountModule,
     SystemModule,
     ToolsModule,
+    UploadModule,
   ],
   providers: [
     {
