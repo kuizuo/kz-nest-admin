@@ -1,37 +1,47 @@
-import fs from 'fs';
-import path from 'path';
 import { Controller, Post, Req } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartFile } from '@fastify/multipart';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  fileRename,
+  getExtname,
+  getFilePath,
+  getFileType,
+  getName,
+  getSize,
+  saveFile,
+} from '@/utils/file.util';
+import { StorageService } from '../tools/storage/storage.service';
+import { AdminUser } from '../core/decorators/admin-user.decorator';
+import { IAdminUser } from '../admin.interface';
 
-function genFileName(file: MultipartFile) {
-  const name = file.filename.split('.')[0];
-  const extName = path.extname(file.filename);
-  const randomName = Array(4)
-    .fill(null)
-    .map(() => Math.round(Math.random() * 16).toString(16))
-    .join('');
-  const fileName = `${name}-${randomName}${extName}`;
-  return fileName;
-}
 @ApiTags('上传模块')
 @Controller('upload')
 export class UploadController {
+  constructor(private storageService: StorageService) {}
+
   @Post()
-  async uploadFile(@Req() req: FastifyRequest) {
+  async upload(@Req() req: FastifyRequest, @AdminUser() user: IAdminUser) {
     const file: MultipartFile = await req.file();
-    const fileName = genFileName(file);
+    const fileName = file.filename;
+    const size = getSize(file.file.bytesRead);
+    const extName = getExtname(fileName);
+    const type = getFileType(extName);
 
-    try {
-      const buffer = await file.toBuffer();
-      const filePath = path.join(__dirname, '../../../../', 'public/upload', fileName);
-      const writeStream = fs.createWriteStream(filePath);
-      writeStream.write(buffer);
-    } catch (err) {
-      console.log(err);
-    }
+    const name = fileRename(fileName);
+    const path = getFilePath(name);
 
-    return { fileName: `/upload/${fileName}` };
+    saveFile(file, name);
+    this.storageService.save({
+      name: getName(fileName),
+      fileName,
+      extName,
+      path,
+      type,
+      size,
+      userId: user?.uid,
+    });
+
+    return;
   }
 }

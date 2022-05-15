@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 15/05/2022 01:08:04
+ Date: 15/05/2022 23:19:58
 */
 
 SET NAMES utf8mb4;
@@ -52,7 +52,7 @@ CREATE TABLE `sys_login_log`  (
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_login_log
@@ -63,6 +63,8 @@ INSERT INTO `sys_login_log` VALUES (15, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Wind
 INSERT INTO `sys_login_log` VALUES (16, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39', '2022-05-14 16:53:38.296226', '2022-05-14 16:53:38.296226', ' 本机地址');
 INSERT INTO `sys_login_log` VALUES (17, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39', '2022-05-14 19:14:48.397320', '2022-05-14 19:14:48.397320', ' 本机地址');
 INSERT INTO `sys_login_log` VALUES (18, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39', '2022-05-15 01:00:50.365353', '2022-05-15 01:00:50.365353', ' 本机地址');
+INSERT INTO `sys_login_log` VALUES (19, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39', '2022-05-15 01:11:02.770238', '2022-05-15 01:11:02.770238', ' 本机地址');
+INSERT INTO `sys_login_log` VALUES (20, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39', '2022-05-15 15:47:00.475699', '2022-05-15 15:47:00.475699', ' 本机地址');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -85,12 +87,12 @@ CREATE TABLE `sys_menu`  (
   `status` tinyint(4) NOT NULL DEFAULT 1,
   `external` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('2022-05-05 13:51:56.794076', '2022-05-05 14:25:29.179241', 1, NULL, '/system', '系统管理', '', 0, 'ant-design:setting-outlined', 254, 'LAYOUT', 1, 1, 1, 0);
+INSERT INTO `sys_menu` VALUES ('2022-05-05 13:51:56.794076', '2022-05-15 01:11:36.682283', 1, NULL, '/system', '系统管理', '', 0, 'ant-design:setting-outlined', 254, 'LAYOUT', 1, 1, 1, 0);
 INSERT INTO `sys_menu` VALUES ('2022-05-05 13:51:56.794076', '2022-05-15 01:03:56.210517', 2, 1, '/system/user', '用户管理', 'sys:user:list', 1, '', 0, '/admin/system/user/index', 1, 1, 1, 0);
 INSERT INTO `sys_menu` VALUES ('2022-05-05 13:51:56.794076', '2022-05-15 01:04:11.012979', 3, 1, '/system/role', '角色管理', 'sys:role:list,sys:role:page', 1, '', 1, '/admin/system/role/index', 1, 1, 1, 0);
 INSERT INTO `sys_menu` VALUES ('2022-05-05 13:51:56.794076', '2022-05-15 01:04:25.479739', 4, 1, '/system/menu', '菜单管理', 'sys:menu:list', 1, '', 2, '/admin/system/menu/index', 1, 1, 1, 0);
@@ -138,7 +140,10 @@ INSERT INTO `sys_menu` VALUES ('2022-05-13 17:48:20.119632', '2022-05-13 17:49:2
 INSERT INTO `sys_menu` VALUES ('2022-05-13 17:48:46.887840', '2022-05-13 17:48:46.887840', 47, 44, '/level/menu2', 'Menu2', NULL, 1, '', 2, NULL, 1, 1, 1, 0);
 INSERT INTO `sys_menu` VALUES ('2022-05-13 17:58:08.175948', '2022-05-15 01:06:17.000000', 48, NULL, '/tools', '系统工具', NULL, 0, 'ant-design:tool-outlined', 254, 'LAYOUT', 1, 1, 1, 0);
 INSERT INTO `sys_menu` VALUES ('2022-05-13 18:00:17.507170', '2022-05-15 01:06:24.000000', 49, 48, '/tools/email', '邮件工具', 'sys:tools:email', 1, '', 1, '/admin/tools/email/index', 1, 1, 1, 0);
-INSERT INTO `sys_menu` VALUES ('2022-05-14 19:14:40.038017', '2022-05-14 19:14:40.038017', 50, 49, NULL, '发送邮件', 'tools:email:send', 2, '', 1, NULL, 1, 1, 1, 0);
+INSERT INTO `sys_menu` VALUES ('2022-05-14 19:14:40.038017', '2022-05-15 01:27:44.000000', 50, 49, NULL, '发送邮件', 'tools:email:send', 2, '', 0, NULL, 1, 1, 1, 0);
+INSERT INTO `sys_menu` VALUES ('2022-05-15 01:26:45.531494', '2022-05-15 15:43:07.000000', 51, 48, '/tools/storage', '存储管理', 'tools:storage:list', 1, '', 2, '/admin/tools/storage/index', 1, 1, 1, 0);
+INSERT INTO `sys_menu` VALUES ('2022-05-15 01:27:32.585503', '2022-05-15 01:27:32.585503', 52, 51, NULL, '文件上传', 'upload', 2, '', 0, NULL, 1, 1, 1, 0);
+INSERT INTO `sys_menu` VALUES ('2022-05-15 16:53:02.343638', '2022-05-15 16:53:02.343638', 53, 51, NULL, '文件删除', 'tools:storage:delete', 2, '', 2, NULL, 1, 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -175,7 +180,7 @@ CREATE TABLE `sys_role_menu`  (
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -195,6 +200,9 @@ INSERT INTO `sys_role_menu` VALUES (21, 2, 24, '2022-05-15 01:03:48.028164', '20
 INSERT INTO `sys_role_menu` VALUES (22, 2, 25, '2022-05-15 01:03:48.028164', '2022-05-15 01:03:48.028164');
 INSERT INTO `sys_role_menu` VALUES (23, 2, 26, '2022-05-15 01:03:48.028164', '2022-05-15 01:03:48.028164');
 INSERT INTO `sys_role_menu` VALUES (24, 2, 27, '2022-05-15 01:03:48.028164', '2022-05-15 01:03:48.028164');
+INSERT INTO `sys_role_menu` VALUES (25, 2, 52, '2022-05-15 01:28:20.895618', '2022-05-15 01:28:20.895618');
+INSERT INTO `sys_role_menu` VALUES (26, 2, 51, '2022-05-15 01:28:20.895618', '2022-05-15 01:28:20.895618');
+INSERT INTO `sys_role_menu` VALUES (27, 2, 48, '2022-05-15 01:28:20.895618', '2022-05-15 01:28:20.895618');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -224,7 +232,7 @@ CREATE TABLE `sys_task`  (
 -- Records of sys_task
 -- ----------------------------
 INSERT INTO `sys_task` VALUES (2, '定时清空登录日志', 'SysLogClearJob.clearLoginLog', 0, 0, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:2:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":2}', '定时清空登录日志', '2022-04-18 13:51:58.066927', '2022-04-29 00:04:39.000000');
-INSERT INTO `sys_task` VALUES (3, '定时清空任务日志', 'SysLogClearJob.clearTaskLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:3:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":3}', '定时清空任务日志', '2022-04-18 13:51:58.066927', '2022-05-15 01:00:32.000000');
+INSERT INTO `sys_task` VALUES (3, '定时清空任务日志', 'SysLogClearJob.clearTaskLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:3:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":3}', '定时清空任务日志', '2022-04-18 13:51:58.066927', '2022-05-15 23:14:58.000000');
 INSERT INTO `sys_task` VALUES (4, '访问百度首页', 'HttpRequestJob.handle', 0, 0, NULL, NULL, 1, '* * * * * ?', NULL, '{\"url\":\"https://www.baidu.com\",\"method\":\"get\"}', NULL, '访问百度首页', '2022-04-29 00:34:59.365492', '2022-04-29 13:02:32.000000');
 INSERT INTO `sys_task` VALUES (5, '发送邮箱', 'EmailJob.send', 0, 0, NULL, NULL, -1, '0 0 0 1 * ?', NULL, '{\"subject\":\"这是标题\",\"to\":\"zeyu57@163.com\",\"content\":\"这是正文\"}', NULL, '每月发送邮箱', '2022-05-14 19:58:51.344360', '2022-05-14 19:58:51.000000');
 
@@ -297,5 +305,28 @@ CREATE TABLE `sys_user_role`  (
 INSERT INTO `sys_user_role` VALUES (1, 1, 1, '2022-04-20 14:08:52.788308', '2022-05-05 15:25:49.157062');
 INSERT INTO `sys_user_role` VALUES (2, 2, 2, '2022-05-05 15:24:05.631702', '2022-05-05 15:25:52.773330');
 INSERT INTO `sys_user_role` VALUES (3, 3, 2, '2022-05-05 17:18:17.200375', '2022-05-05 17:18:17.200375');
+
+-- ----------------------------
+-- Table structure for tool-storage
+-- ----------------------------
+DROP TABLE IF EXISTS `tool-storage`;
+CREATE TABLE `tool-storage`  (
+  `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
+  `fileName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实文件名',
+  `ext_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `size` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `user_id` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tool-storage
+-- ----------------------------
+INSERT INTO `tool-storage` VALUES ('2022-05-15 23:18:10.106054', '2022-05-15 23:18:10.106054', 1, 'logo', 'logo.jpg', 'jpg', '/upload/logo-202205152318102.jpg', '图片', '41.72 KB', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
