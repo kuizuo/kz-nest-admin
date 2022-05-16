@@ -150,6 +150,9 @@ export class SysMenuService {
         type: In([1, 2]),
       });
     } else {
+      if (isEmpty(roleIds)) {
+        return permission;
+      }
       result = await this.menuRepository
         .createQueryBuilder('menu')
         .innerJoinAndSelect('sys_role_menu', 'role_menu', 'menu.id = role_menu.menu_id')
@@ -196,6 +199,7 @@ export class SysMenuService {
     if (onlineUserIds && onlineUserIds.length > 0) {
       for (let i = 0; i < onlineUserIds.length; i++) {
         const uid = onlineUserIds[i].split('admin:token:')[1];
+        if (!uid) continue;
         const perms = await this.getPerms(parseInt(uid));
         await this.redisService.getRedis().set(`admin:perms:${uid}`, JSON.stringify(perms));
       }
