@@ -49,6 +49,7 @@ specifiers:
   fastify-multer: ^2.0.2
   fastify-swagger: ^5.1.1
   helmet: ^5.0.2
+  iconv-lite: ^0.6.3
   ioredis: ^4.28.5
   jest: ^27.5.1
   lodash: ^4.17.21
@@ -114,6 +115,7 @@ dependencies:
   fastify-multer: 2.0.2
   fastify-swagger: 5.1.1
   helmet: 5.0.2
+  iconv-lite: 0.6.3
   ioredis: 4.28.5
   lodash: 4.17.21
   log4js: 6.4.5
