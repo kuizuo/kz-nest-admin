@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as svgCaptcha from 'svg-captcha';
 import { ImageCaptcha, MenuInfo, PermInfo } from './login.class';
 import { isEmpty } from 'lodash';
-import { ImageCaptchaDto } from './login.dto';
+import { ImageCaptchaDto, RegisterInfoDto } from './login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UtilService } from '@/shared/services/util.service';
 import { SysMenuService } from '../system/menu/menu.service';
@@ -10,6 +10,8 @@ import { SysUserService } from '../system/user/user.service';
 import { ApiException } from '@/common/exceptions/api.exception';
 import { SysLogService } from '../system/log/log.service';
 import { RedisService } from '@/shared/services/redis.service';
+import { EmailService } from '@/shared/services/email.service';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class LoginService {
@@ -18,6 +20,7 @@ export class LoginService {
     private menuService: SysMenuService,
     private userService: SysUserService,
     private logService: SysLogService,
+    private emailService: EmailService,
     private util: UtilService,
     private jwtService: JwtService,
   ) {}
@@ -48,7 +51,7 @@ export class LoginService {
   }
 
   /**
-   * 校验验证码
+   * 校验图片验证码
    */
   async checkImgCaptcha(id: string, code: string): Promise<void> {
     const result = await this.redisService.getRedis().get(`admin:captcha:img:${id}`);
@@ -97,6 +100,76 @@ export class LoginService {
     await this.redisService.getRedis().set(`admin:perms:${user.id}`, JSON.stringify(perms));
     await this.logService.saveLoginLog(user.id, ip, ua);
     return jwtSign;
+  }
+
+  /**
+   * 注册
+   */
+  async register(param: RegisterInfoDto): Promise<void> {
+    await this.userService.register(param);
+  }
+
+  /**
+   * 发送验证码
+   */
+  async sendCode(email: string, ip: string): Promise<any> {
+    const LIMIT_TIME = 5;
+    const getRemainTime = () => {
+      return Math.round(
+        (dayjs(dayjs().add(1, 'day').format('YYYY-MM-DD')).valueOf() - dayjs().valueOf()) / 1000,
+      );
+    };
+
+    // ip限制
+    const ipLimit = await this.redisService.getRedis().get(`admin:ip:${ip}:code:limit`);
+    if (ipLimit) throw new ApiException(10200);
+
+    // 1分钟最多接收1条
+    const limit = await this.redisService.getRedis().get(`admin:email:${email}:limit`);
+    if (limit) throw new ApiException(10200);
+
+    // 1天一个邮箱最多接收5条
+    let limitDayNum: string | number = await this.redisService
+      .getRedis()
+      .get(`admin:email:${email}:limit-day`);
+    limitDayNum = limitDayNum ? parseInt(limitDayNum) : 0;
+    if (limitDayNum > LIMIT_TIME) throw new ApiException(10201);
+
+    // 1天一个ip最多发送5条
+    let ipLimitDayNum: string | number = await this.redisService
+      .getRedis()
+      .get(`admin:ip:${ip}:code:limit-day`);
+    ipLimitDayNum = ipLimitDayNum ? parseInt(ipLimitDayNum) : 0;
+    if (ipLimitDayNum > LIMIT_TIME) throw new ApiException(10201);
+    if (ipLimitDayNum) throw new ApiException(10200);
+
+    // 发送验证码
+    const code = Math.random().toString(16).substring(2, 6);
+    await this.emailService.sendCodeMail(email, code);
+
+    await this.redisService.getRedis().set(`admin:ip:${ip}:code:limit`, 1, 'EX', 60);
+    await this.redisService.getRedis().set(`admin:email:${email}:limit`, 1, 'EX', 60);
+    await this.redisService
+      .getRedis()
+      .set(`admin:email:${email}:limit-day`, ++limitDayNum, 'EX', getRemainTime());
+    await this.redisService
+      .getRedis()
+      .set(`admin:ip:${ip}:code:limit-day`, ++ipLimitDayNum, 'EX', getRemainTime());
+
+    // 验证码5分钟过期时间
+    await this.redisService.getRedis().set(`admin:email:${email}:code`, code, 'EX', 60 * 5);
+  }
+
+  /**
+   * 校验验证码
+   */
+  async checkCode(email: string, code: string): Promise<void> {
+    const result = await this.redisService.getRedis().get(`admin:email:${email}:code`);
+    if (isEmpty(result) || code.toLowerCase() !== result.toLowerCase()) {
+      throw new ApiException(10002);
+    }
+    // 校验成功后移除验证码
+    await this.redisService.getRedis().del(`admin:email:${email}:code`);
   }
 
   /**

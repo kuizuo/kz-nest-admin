@@ -33,9 +33,13 @@ export class EmailService {
     });
   }
 
-  async sendCodeMail(subject, user, code) {
+  async sendCodeMail(to, code) {
     const content = `尊敬的用户您好，您的验证码是${code}，请于5分钟内输入。`;
-    const ret = await this.sendMail(user.email, subject, content);
+    const ret = await this.sendMail(
+      to,
+      `[${this.configService.get<string>('appName')}] ` + '验证码通知',
+      content,
+    );
 
     if (!ret) return '发送验证码失败';
     return '发送邮箱验证码成功，请在5分钟内输入';

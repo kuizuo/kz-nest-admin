@@ -4,6 +4,7 @@ import { findIndex, isEmpty } from 'lodash';
 import { ApiException } from '@/common/exceptions/api.exception';
 import SysUserRole from '@/entities/admin/sys-user-role.entity';
 import SysUser from '@/entities/admin/sys-user.entity';
+import SysRole from '@/entities/admin/sys-role.entity';
 import { UtilService } from '@/shared/services/util.service';
 import { EntityManager, In, Like, Not, Repository } from 'typeorm';
 import {
@@ -13,6 +14,7 @@ import {
   UpdateUserDto,
   UpdateUserInfoDto,
 } from './user.dto';
+import { RegisterInfoDto } from '../../login/login.dto';
 import { AccountInfo, PageSearchUserInfo } from './user.class';
 import { ROOT_ROLE_ID } from '@/modules/admin/admin.constants';
 import { RedisService } from '@/shared/services/redis.service';
@@ -27,6 +29,7 @@ export class SysUserService {
     private redisService: RedisService,
     private paramConfigService: SysParamConfigService,
     @InjectRepository(SysUser) private userRepository: Repository<SysUser>,
+    @InjectRepository(SysRole) private roleRepository: Repository<SysRole>,
     @InjectRepository(SysUserRole) private userRoleRepository: Repository<SysUserRole>,
     @InjectEntityManager() private entityManager: EntityManager,
     @Inject(ROOT_ROLE_ID) private rootRoleId: number,
@@ -347,5 +350,43 @@ export class SysUserService {
       throw new ApiException(10001);
     }
     return true;
+  }
+
+  /**
+   * 注册
+   */
+  async register(param: RegisterInfoDto): Promise<void> {
+    const exists = await this.userRepository.findOne({ username: param.username });
+    if (!isEmpty(exists)) throw new ApiException(10001);
+
+    await this.entityManager.transaction(async (manager) => {
+      const salt = this.util.generateRandomValue(32);
+
+      const password = this.util.md5(`${param.password ?? '123456'}${salt}`);
+      const avatar = await this.qqService.getAvater(param.qq);
+      const nickName = await this.qqService.getNickname(param.qq);
+      const u = manager.create(SysUser, {
+        username: param.username,
+        password: password,
+        nickName,
+        avatar,
+        qq: param.qq,
+        email: param.email,
+        // phone: param.phone,
+        status: 1,
+        psalt: salt,
+      });
+      const result = await manager.save(u);
+      const role = await this.roleRepository.findOne({ value: 'user' });
+      if (!role) throw new ApiException(10022);
+
+      const r = manager.create(SysUserRole, {
+        userId: result.id,
+        roleId: role.id,
+      });
+
+      // 分配角色
+      await manager.insert(SysUserRole, r);
+    });
   }
 }

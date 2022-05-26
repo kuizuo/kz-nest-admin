@@ -12,6 +12,10 @@ export class ResOp {
   static success(data?: any) {
     return new ResOp(200, data);
   }
+
+  static error(code: number, message) {
+    return new ResOp(code, {}, message);
+  }
 }
 
 export class PageResult<T> {
