@@ -42,6 +42,8 @@ export class UploadController {
       userId: user?.uid,
     });
 
-    return;
+    return {
+      filename: path,
+    };
   }
 }
