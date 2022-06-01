@@ -8,11 +8,11 @@ export default class ToolStorage extends BaseEntity {
   @ApiProperty()
   id: number;
 
-  @Column({ type: 'varchar', length: 50, comment: '文件名' })
+  @Column({ type: 'varchar', length: 200, comment: '文件名' })
   @ApiProperty()
   name: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true, comment: '真实文件名' })
+  @Column({ type: 'varchar', length: 200, nullable: true, comment: '真实文件名' })
   @ApiProperty()
   fileName: string;
 
