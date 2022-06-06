@@ -80,9 +80,8 @@ export class LoginService {
     // 系统管理员允许多点登录
     if (user.id === 1) {
       const oldToken = await this.getRedisTokenById(user.id);
-      if (oldToken) {
-        return oldToken;
-      }
+      await this.logService.saveLoginLog(user.id, ip, ua);
+      if (oldToken) return oldToken;
     }
 
     const jwtSign = this.jwtService.sign(

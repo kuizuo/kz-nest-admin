@@ -117,14 +117,17 @@ export class SysUserService {
     if (!isEmpty(exists)) {
       throw new ApiException(10001);
     }
-    // 所有用户初始密码为123456
     await this.entityManager.transaction(async (manager) => {
       const salt = this.util.generateRandomValue(32);
 
-      // 查找配置的初始密码
-      const initPassword = await this.paramConfigService.findValueByKey(SYS_USER_INITPASSWORD);
+      let password;
+      if (!param.password) {
+        const initPassword = await this.paramConfigService.findValueByKey(SYS_USER_INITPASSWORD);
+        password = this.util.md5(`${initPassword ?? '123456'}${salt}`);
+      } else {
+        password = this.util.md5(`${param.password ?? '123456'}${salt}`);
+      }
 
-      const password = this.util.md5(`${initPassword ?? '123456'}${salt}`);
       const avatar = await this.qqService.getAvater(param.qq);
       const nickName = param.nickName || (await this.qqService.getNickname(param.qq));
       const u = manager.create(SysUser, {
@@ -157,6 +160,10 @@ export class SysUserService {
    */
   async update(param: UpdateUserDto): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
+      if (param.password) {
+        await this.forceUpdatePassword(param.id, param.password);
+      }
+
       const avatar = await this.qqService.getAvater(param.qq);
       await manager.update(SysUser, param.id, {
         username: param.username,

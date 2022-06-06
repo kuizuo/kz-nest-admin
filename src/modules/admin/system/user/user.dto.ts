@@ -57,22 +57,27 @@ export class UpdatePasswordDto {
   @ApiProperty({ description: '更改前的密码' })
   @IsString()
   @MinLength(6)
-  @Matches(/^[a-z0-9A-Z`~!#%^&*=+\\|{};:'\\",<>/?]+$/)
+  @Matches(/^[a-z0-9A-Z\W_]+$/)
   originPassword: string;
 
   @ApiProperty({ description: '更改后的密码' })
   @MinLength(6)
-  @Matches(/^[a-z0-9A-Z`~!#%^&*=+\\|{};:'\\",<>/?]+$/)
+  @Matches(/^[a-z0-9A-Z\W_]+$/)
   newPassword: string;
 }
 
 export class CreateUserDto {
   @ApiProperty({ description: '登录账号' })
   @IsString()
-  @Matches(/^[a-z0-9A-Z]+$/)
+  @Matches(/^[a-z0-9A-Z\W_]+$/)
   @MinLength(4)
   @MaxLength(20)
   username: string;
+
+  @ApiProperty({ description: '更改后的密码' })
+  @MinLength(6)
+  @Matches(/^[a-z0-9A-Z\W_]+$/)
+  password: string;
 
   @ApiProperty({ description: '归属角色', type: [Number] })
   @ArrayNotEmpty()
