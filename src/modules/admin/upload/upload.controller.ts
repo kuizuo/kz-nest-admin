@@ -1,4 +1,4 @@
-import { Controller, Post, Req } from '@nestjs/common';
+import { BadRequestException, Controller, Post, Req } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartFile } from '@fastify/multipart';
 import { ApiTags } from '@nestjs/swagger';
@@ -31,19 +31,24 @@ export class UploadController {
     const name = fileRename(fileName);
     const path = getFilePath(name);
 
-    saveFile(file, name);
-    this.storageService.save({
-      name: getName(fileName),
-      fileName,
-      extName,
-      path,
-      type,
-      size,
-      userId: user?.uid,
-    });
+    try {
+      await saveFile(file, name);
+      await this.storageService.save({
+        name: getName(fileName),
+        fileName,
+        extName,
+        path,
+        type,
+        size,
+        userId: user?.uid,
+      });
 
-    return {
-      filename: path,
-    };
+      return {
+        filename: path,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('上传失败');
+    }
   }
 }
