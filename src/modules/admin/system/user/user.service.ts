@@ -70,8 +70,29 @@ export class SysUserService {
   /**
    * 更新个人信息
    */
-  async updatePersonInfo(uid: number, info: UpdateUserInfoDto): Promise<void> {
-    await this.userRepository.update(uid, info);
+  async updateAccountInfo(uid: number, info: UpdateUserInfoDto): Promise<void> {
+    const user = await this.userRepository.findOne({ id: uid });
+    if (isEmpty(user)) {
+      throw new ApiException(10017);
+    }
+
+    const data = {
+      ...(info.nickName ? { nickName: info.nickName } : null),
+      ...(info.avatar ? { avatar: info.avatar } : null),
+      ...(info.email ? { email: info.email } : null),
+      ...(info.phone ? { phone: info.phone } : null),
+      ...(info.qq ? { qq: info.qq } : null),
+      ...(info.remark ? { remark: info.remark } : null),
+    };
+
+    if (!info.avatar && info.qq) {
+      // 如果qq不等于原qq，则更新qq头像
+      if (info.qq !== user.qq) {
+        data.avatar = await this.qqService.getAvater(info.qq);
+      }
+    }
+
+    await this.userRepository.update(uid, data);
   }
 
   /**

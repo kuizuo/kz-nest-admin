@@ -7,9 +7,8 @@ import { PermissionOptional } from '../core/decorators/permission-optional.decor
 import { MenuInfo, PermInfo } from '../login/login.class';
 import { LoginService } from '../login/login.service';
 import { AccountInfo } from '../system/user/user.class';
-import { UpdatePasswordDto, UserExistDto } from '../system/user/user.dto';
+import { UpdatePasswordDto, UpdateUserInfoDto, UserExistDto } from '../system/user/user.dto';
 import { SysUserService } from '../system/user/user.service';
-import { UpdatePersonInfoDto } from './account.dto';
 
 @ApiTags('账户模块')
 @ApiSecurity(ADMIN_PREFIX)
@@ -28,8 +27,8 @@ export class AccountController {
   @ApiOperation({ summary: '更改账户资料' })
   @PermissionOptional()
   @Post('update')
-  async update(@Body() dto: UpdatePersonInfoDto, @AdminUser() user: IAdminUser): Promise<void> {
-    await this.userService.updatePersonInfo(user.uid, dto);
+  async update(@Body() dto: UpdateUserInfoDto, @AdminUser() user: IAdminUser): Promise<void> {
+    await this.userService.updateAccountInfo(user.uid, dto);
   }
 
   @ApiOperation({ summary: '更改账户密码' })

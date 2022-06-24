@@ -20,49 +20,48 @@ import { isEmpty } from 'lodash';
 import { PageOptionsDto } from '@/common/dto/page.dto';
 
 export class UpdateUserInfoDto {
-  @ApiProperty({
-    required: false,
-    description: '用户呢称',
-  })
+  @ApiProperty({ description: '用户呢称' })
   @IsString()
   @IsOptional()
   nickName: string;
 
-  @ApiProperty({
-    required: false,
-    description: '用户邮箱',
-  })
+  @ApiProperty({ description: '用户邮箱' })
   @IsEmail()
   @ValidateIf((o) => !isEmpty(o.email))
   email: string;
 
-  @ApiProperty({
-    required: false,
-    description: '用户手机号',
-  })
+  @ApiProperty({ description: '用户QQ' })
+  @IsString()
+  @Matches(/^[0-9]+$/)
+  @MinLength(5)
+  @MaxLength(11)
+  @IsOptional()
+  qq: string;
+
+  @ApiProperty({ description: '用户手机号' })
   @IsString()
   @IsOptional()
   phone: string;
 
-  @ApiProperty({
-    required: false,
-    description: '用户备注',
-  })
+  @ApiProperty({ description: '用户头像' })
+  @IsString()
+  @IsOptional()
+  avatar: string;
+
+  @ApiProperty({ description: '用户备注' })
   @IsString()
   @IsOptional()
   remark: string;
 }
 
 export class UpdatePasswordDto {
-  @ApiProperty({ description: '更改前的密码' })
+  @ApiProperty({ description: '旧密码' })
   @IsString()
-  @MinLength(6)
-  @Matches(/^[a-z0-9A-Z\W_]+$/)
+  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
   oldPassword: string;
 
-  @ApiProperty({ description: '更改后的密码' })
-  @MinLength(6)
-  @Matches(/^[a-z0-9A-Z\W_]+$/)
+  @ApiProperty({ description: '新密码' })
+  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
   newPassword: string;
 }
 
@@ -75,8 +74,7 @@ export class CreateUserDto {
   username: string;
 
   @ApiProperty({ description: '更改后的密码' })
-  @MinLength(6)
-  @Matches(/^[a-z0-9A-Z\W_]+$/)
+  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
   password: string;
 
   @ApiProperty({ description: '归属角色', type: [Number] })
@@ -85,34 +83,22 @@ export class CreateUserDto {
   @ArrayMaxSize(3)
   roles: number[];
 
-  @ApiProperty({
-    required: false,
-    description: '呢称',
-  })
+  @ApiProperty({ description: '呢称' })
   @IsString()
   @IsOptional()
   nickName: string;
 
-  @ApiProperty({
-    required: false,
-    description: '邮箱',
-  })
+  @ApiProperty({ description: '邮箱' })
   @IsEmail()
   @ValidateIf((o) => !isEmpty(o.email))
   email: string;
 
-  @ApiProperty({
-    required: false,
-    description: '手机号',
-  })
+  @ApiProperty({ description: '手机号' })
   @IsString()
   @IsOptional()
   phone: string;
 
-  @ApiProperty({
-    required: false,
-    description: 'QQ',
-  })
+  @ApiProperty({ description: 'QQ' })
   @IsString()
   @Matches(/^[0-9]+$/)
   @MinLength(5)
@@ -120,10 +106,7 @@ export class CreateUserDto {
   @IsOptional()
   qq: string;
 
-  @ApiProperty({
-    required: false,
-    description: '备注',
-  })
+  @ApiProperty({ description: '备注' })
   @IsString()
   @IsOptional()
   remark: string;
@@ -168,6 +151,9 @@ export class PageSearchUserDto extends PageOptionsDto {
 
   @ApiProperty({ description: 'qq' })
   @IsString()
+  @Matches(/^[0-9]+$/)
+  @MinLength(5)
+  @MaxLength(11)
   @IsOptional()
   qq: string;
 
