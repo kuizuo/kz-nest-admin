@@ -57,11 +57,15 @@ export class UpdateUserInfoDto {
 export class UpdatePasswordDto {
   @ApiProperty({ description: '旧密码' })
   @IsString()
-  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
+  @Matches(/^[a-z0-9A-Z\W_]+$/)
+  @MinLength(6)
+  @MaxLength(20)
   oldPassword: string;
 
   @ApiProperty({ description: '新密码' })
-  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
+  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/, {
+    message: '密码必须包含数字、字母、特殊字符，长度为6-16',
+  })
   newPassword: string;
 }
 
@@ -73,8 +77,11 @@ export class CreateUserDto {
   @MaxLength(20)
   username: string;
 
-  @ApiProperty({ description: '更改后的密码' })
-  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/)
+  @ApiProperty({ description: '登录密码' })
+  @IsOptional()
+  @Matches(/(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,16}$/, {
+    message: '密码必须包含数字、字母、特殊字符，长度为6-16',
+  })
   password: string;
 
   @ApiProperty({ description: '归属角色', type: [Number] })
