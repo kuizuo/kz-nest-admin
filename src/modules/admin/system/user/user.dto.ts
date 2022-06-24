@@ -58,7 +58,7 @@ export class UpdatePasswordDto {
   @IsString()
   @MinLength(6)
   @Matches(/^[a-z0-9A-Z\W_]+$/)
-  originPassword: string;
+  oldPassword: string;
 
   @ApiProperty({ description: '更改后的密码' })
   @MinLength(6)

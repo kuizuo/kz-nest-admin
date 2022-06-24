@@ -75,14 +75,14 @@ export class SysUserService {
   }
 
   /**
-   * 更改管理员密码
+   * 更改密码
    */
   async updatePassword(uid: number, dto: UpdatePasswordDto): Promise<void> {
     const user = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
-    const comparePassword = this.util.md5(`${dto.originPassword}${user.psalt}`);
+    const comparePassword = this.util.md5(`${dto.oldPassword}${user.psalt}`);
     // 原密码不一致，不允许更改
     if (user.password !== comparePassword) {
       throw new ApiException(10011);
@@ -93,7 +93,7 @@ export class SysUserService {
   }
 
   /**
-   * 直接更改管理员密码
+   * 直接更改密码
    */
   async forceUpdatePassword(uid: number, password: string): Promise<void> {
     const user = await this.userRepository.findOne({ id: uid });
