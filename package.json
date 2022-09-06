@@ -1,5 +1,5 @@
 {
-  "name": "kz-admin",
+  "name": "kz-nest-admin",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -55,7 +55,7 @@
     "dotenv": "16.0.0",
     "fastify": "^3.28.0",
     "fastify-multer": "^2.0.2",
-    "fastify-swagger": "^5.1.1",
+    "fastify-swagger": "^6.0.0",
     "helmet": "^5.0.2",
     "iconv-lite": "^0.6.3",
     "ioredis": "^4.28.5",
