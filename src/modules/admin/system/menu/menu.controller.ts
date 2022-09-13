@@ -57,7 +57,7 @@ export class SysMenuController {
     }
     // check
     await this.menuService.check(dto);
-    if (dto.parent === -1) {
+    if (dto.parent === -1 || !dto.parent) {
       dto.parent = null;
     }
     const insertData: CreateMenuDto & { id: number } = {
