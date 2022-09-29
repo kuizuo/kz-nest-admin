@@ -1,8 +1,13 @@
 {
   "name": "kz-nest-admin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "基于NestJs + TypeScript + TypeORM + Redis + MySql + Vben Admin编写的一款前后端分离的权限管理系统",
-  "author": "kuizuo",
+  "packageManager": "pnpm@7.11.0",
+  "author": {
+    "name": "kuizuo",
+    "email": "hi@kuizuo.cn",
+    "url": "https://github.com/kuizuo"
+  },
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
