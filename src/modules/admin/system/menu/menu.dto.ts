@@ -1,4 +1,4 @@
-import { PageOptionsDto } from '@/common/dto/page.dto';
+import { PaginateDto } from '@/common/dto/page.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

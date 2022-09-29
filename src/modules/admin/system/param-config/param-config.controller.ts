@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { PageResult } from '@/common/class/res.class';
-import { PageOptionsDto } from '@/common/dto/page.dto';
+import { PaginateDto } from '@/common/dto/page.dto';
 import SysConfig from '@/entities/admin/sys-config.entity';
 import { ADMIN_PREFIX } from '../../admin.constants';
 import {
@@ -21,7 +21,7 @@ export class SysParamConfigController {
   @ApiOperation({ summary: '分页获取参数配置列表' })
   @ApiOkResponse({ type: [SysConfig] })
   @Get('page')
-  async page(@Query() dto: PageOptionsDto): Promise<PageResult<SysConfig>> {
+  async page(@Query() dto: PaginateDto): Promise<PageResult<SysConfig>> {
     const items = await this.paramConfigService.getConfigListByPage(dto.page - 1, dto.pageSize);
     const count = await this.paramConfigService.countConfigList();
     return {

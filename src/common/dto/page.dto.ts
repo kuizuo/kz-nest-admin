@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, Min } from 'class-validator';
 
-export class PageOptionsDto {
+export class PaginateDto {
   @ApiProperty({
-    description: '当前页包含数量',
+    description: '当前页数',
     required: false,
     default: 10,
   })

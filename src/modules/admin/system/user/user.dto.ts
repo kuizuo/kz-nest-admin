@@ -17,7 +17,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { isEmpty } from 'lodash';
-import { PageOptionsDto } from '@/common/dto/page.dto';
+import { PaginateDto } from '@/common/dto/page.dto';
 
 export class UpdateUserInfoDto {
   @ApiProperty({ description: '用户呢称' })
@@ -145,7 +145,7 @@ export class DeleteUserDto {
   ids: number[];
 }
 
-export class PageSearchUserDto extends PageOptionsDto {
+export class PageSearchUserDto extends PaginateDto {
   @ApiProperty({ description: '用户名' })
   @IsOptional()
   @IsString()

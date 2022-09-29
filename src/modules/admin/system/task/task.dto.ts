@@ -17,7 +17,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { PageOptionsDto } from '@/common/dto/page.dto';
+import { PaginateDto } from '@/common/dto/page.dto';
 
 // cron 表达式验证，bull lib下引用了cron-parser
 @ValidatorConstraint({ name: 'isCronExpression', async: false })
@@ -114,7 +114,7 @@ export class CheckIdTaskDto {
   id: number;
 }
 
-export class PageSearchTaskDto extends PageOptionsDto {
+export class PageSearchTaskDto extends PaginateDto {
   @ApiProperty({ description: '任务名称' })
   @IsOptional()
   @IsString()

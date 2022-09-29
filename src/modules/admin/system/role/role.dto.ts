@@ -1,4 +1,4 @@
-import { PageOptionsDto } from '@/common/dto/page.dto';
+import { PaginateDto } from '@/common/dto/page.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -63,7 +63,7 @@ export class InfoRoleDto {
   id: number;
 }
 
-export class PageSearchRoleDto extends PageOptionsDto {
+export class PageSearchRoleDto extends PaginateDto {
   @ApiProperty({ description: '角色名称' })
   @IsOptional()
   @IsString()
