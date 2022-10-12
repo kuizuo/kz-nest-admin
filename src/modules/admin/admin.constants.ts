@@ -1,5 +1,6 @@
 export const ADMIN_USER = 'adminUser';
 export const AUTHORIZE_KEY_METADATA = 'admin_module:authorize';
+export const API_TOKEN_KEY_METADATA = 'admin_module:api_token';
 export const PERMISSION_OPTIONAL_KEY_METADATA = 'admin_module:permission_optional';
 export const LOG_DISABLED_KEY_METADATA = 'admin_module:log_disabled';
 

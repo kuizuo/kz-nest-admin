@@ -94,6 +94,7 @@ import { SysServeService } from './serve/serve.service';
     SysMenuService,
     SysLogService,
     SysOnlineService,
+    SysParamConfigService,
   ],
 })
 export class SystemModule {}

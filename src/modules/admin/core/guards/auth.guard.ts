@@ -9,8 +9,11 @@ import {
   ADMIN_USER,
   PERMISSION_OPTIONAL_KEY_METADATA,
   AUTHORIZE_KEY_METADATA,
+  API_TOKEN_KEY_METADATA,
 } from '@/modules/admin/admin.constants';
+import { SYS_API_TOKEN } from '@/common/contants/param-config.contants';
 import { LoginService } from '@/modules/admin/login/login.service';
+import { SysParamConfigService } from '@/modules/admin/system/param-config/param-config.service';
 
 /**
  * admin perm check guard
@@ -21,6 +24,7 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
     private jwtService: JwtService,
     private loginService: LoginService,
+    private paramConfigService: SysParamConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -36,6 +40,18 @@ export class AuthGuard implements CanActivate {
     if (isEmpty(token)) {
       throw new ApiException(11001);
     }
+
+    // 检查是否开启API TOKEN授权，当开启时，只有带API TOKEN可以正常访问
+    const apiToken = this.reflector.get<boolean>(API_TOKEN_KEY_METADATA, context.getHandler());
+    if (apiToken) {
+      const result = await this.paramConfigService.findValueByKey(SYS_API_TOKEN);
+      if (token === result) {
+        return true;
+      } else {
+        throw new ApiException(11003);
+      }
+    }
+
     try {
       // 挂载对象到当前请求上
       request[ADMIN_USER] = this.jwtService.verify(token);

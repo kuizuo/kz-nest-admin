@@ -114,8 +114,8 @@ export class LoginService {
   async sendCode(email: string, ip: string): Promise<any> {
     const LIMIT_TIME = 5;
     const getRemainTime = () => {
-      const now = dayjs()
-      return now.endOf('day').diff(now, 'second')
+      const now = dayjs();
+      return now.endOf('day').diff(now, 'second');
     };
 
     // ip限制
