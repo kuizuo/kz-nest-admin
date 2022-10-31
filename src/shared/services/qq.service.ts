@@ -1,17 +1,13 @@
-import Http from '@/utils/Http.class';
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class QQService {
-  private http: Http;
-
-  constructor() {
-    this.http = new Http();
-  }
+  constructor(private readonly http: HttpService) {}
 
   async getNickname(qq: string | number) {
-    const res = await this.http.get('https://res.abeim.cn/api-qq.name?qq=' + qq);
-    return res.data.name;
+    const { data } = await this.http.axiosRef.get('https://api.kuizuo.cn/api/qqnick?qq=' + qq);
+    return data;
   }
 
   async getAvater(qq: string | number) {

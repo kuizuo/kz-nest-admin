@@ -92,7 +92,7 @@ export class SysMenuService {
    */
   async findChildMenus(mid: number): Promise<any> {
     const allMenus: any = [];
-    const menus = await this.menuRepository.find({ parent: mid });
+    const menus = await this.menuRepository.findBy({ parent: mid });
     // if (_.isEmpty(menus)) {
     //   return allMenus;
     // }
@@ -113,7 +113,7 @@ export class SysMenuService {
    * @param mid menu id
    */
   async getMenuItemInfo(mid: number): Promise<SysMenu> {
-    const menu = await this.menuRepository.findOne({ id: mid });
+    const menu = await this.menuRepository.findOneBy({ id: mid });
     return menu;
   }
 
@@ -121,10 +121,10 @@ export class SysMenuService {
    * 获取某个菜单以及关联的父菜单的信息
    */
   async getMenuItemAndParentInfo(mid: number): Promise<MenuItemAndParentInfoResult> {
-    const menu = await this.menuRepository.findOne({ id: mid });
+    const menu = await this.menuRepository.findOneBy({ id: mid });
     let parentMenu: SysMenu | undefined = undefined;
     if (menu && menu.parent) {
-      parentMenu = await this.menuRepository.findOne({ id: menu.parent });
+      parentMenu = await this.menuRepository.findOneBy({ id: menu.parent });
     }
     return { menu, parentMenu };
   }
@@ -133,7 +133,7 @@ export class SysMenuService {
    * 查找节点路由是否存在
    */
   async findRouterExist(path: string): Promise<boolean> {
-    const menus = await this.menuRepository.findOne({ path });
+    const menus = await this.menuRepository.findOneBy({ path });
     return !isEmpty(menus);
   }
 
@@ -145,7 +145,7 @@ export class SysMenuService {
     let permission: any[] = [];
     let result: any = null;
     if (includes(roleIds, this.rootRoleId)) {
-      result = await this.menuRepository.find({
+      result = await this.menuRepository.findBy({
         permission: Not(IsNull()),
         type: In([1, 2]),
       });

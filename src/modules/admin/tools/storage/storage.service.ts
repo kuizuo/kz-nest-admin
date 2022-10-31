@@ -55,7 +55,7 @@ export class StorageService {
     };
 
     if (username) {
-      const user = await this.userRepository.findOne({ username: username });
+      const user = await this.userRepository.findOneBy({ username: username });
       where['userId'] = user?.id;
     }
 

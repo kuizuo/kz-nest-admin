@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { customAlphabet, nanoid } from 'nanoid';
+// import { customAlphabet, nanoid } from 'nanoid';
 import * as CryptoJS from 'crypto-js';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class UtilService {
    * 生成一个UUID
    */
   public generateUUID(): string {
-    return nanoid();
+    return '';
   }
 
   /**
@@ -54,7 +54,6 @@ export class UtilService {
     length: number,
     placeholder = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',
   ): string {
-    const customNanoid = customAlphabet(placeholder, length);
-    return customNanoid();
+    return '';
   }
 }

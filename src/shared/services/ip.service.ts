@@ -1,20 +1,14 @@
-import Http from '@/utils/Http.class';
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import * as iconv from 'iconv-lite';
 
 @Injectable()
 export class IpService {
-  private http: Http;
-
-  constructor() {
-    this.http = new Http();
-  }
+  constructor(private readonly http: HttpService) {}
 
   async getAddress(ip: string) {
-    const res = await this.http.get('http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=' + ip, {
-      responseType: 'arraybuffer',
-      transformResponse: [(data) => JSON.parse(iconv.decode(data, 'gbk'))],
-    });
-    return res.data.addr;
+    const { data } = await this.http.axiosRef.get(
+      `https://api.kuizuo.cn/api/ip_location?ip=${ip}&type=json`,
+    );
+    return data.addr;
   }
 }

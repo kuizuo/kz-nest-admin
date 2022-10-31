@@ -41,7 +41,7 @@ export class SysUserService {
    * 根据用户名查找已经启用的用户
    */
   async findUserByUserName(username: string): Promise<SysUser | undefined> {
-    return await this.userRepository.findOne({
+    return await this.userRepository.findOneBy({
       username: username,
       status: 1,
     });
@@ -52,7 +52,7 @@ export class SysUserService {
    * @param uid user id
    */
   async getAccountInfo(uid: number): Promise<AccountInfo> {
-    const user: SysUser = await this.userRepository.findOne({ id: uid });
+    const user: SysUser = await this.userRepository.findOneBy({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
@@ -71,7 +71,7 @@ export class SysUserService {
    * 更新个人信息
    */
   async updateAccountInfo(uid: number, info: UpdateUserInfoDto): Promise<void> {
-    const user = await this.userRepository.findOne({ id: uid });
+    const user = await this.userRepository.findOneBy({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
@@ -99,7 +99,7 @@ export class SysUserService {
    * 更改密码
    */
   async updatePassword(uid: number, dto: UpdatePasswordDto): Promise<void> {
-    const user = await this.userRepository.findOne({ id: uid });
+    const user = await this.userRepository.findOneBy({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
@@ -117,7 +117,7 @@ export class SysUserService {
    * 直接更改密码
    */
   async forceUpdatePassword(uid: number, password: string): Promise<void> {
-    const user = await this.userRepository.findOne({ id: uid });
+    const user = await this.userRepository.findOneBy({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
@@ -132,7 +132,7 @@ export class SysUserService {
    */
   async add(param: CreateUserDto): Promise<void> {
     // const insertData: any = { ...CreateUserDto };
-    const exists = await this.userRepository.findOne({
+    const exists = await this.userRepository.findOneBy({
       username: param.username,
     });
     if (!isEmpty(exists)) {
@@ -218,11 +218,11 @@ export class SysUserService {
    * @param id 用户id
    */
   async info(id: number): Promise<SysUser & { roles: number[] }> {
-    const user: SysUser = await this.userRepository.findOne(id);
+    const user: SysUser = await this.userRepository.findOneBy({ id });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
-    const roleRows = await this.userRoleRepository.find({ userId: user.id });
+    const roleRows = await this.userRoleRepository.findBy({ userId: user.id });
     const roles = roleRows.map((e) => {
       return e.roleId;
     });
@@ -257,7 +257,7 @@ export class SysUserService {
   async count(uid: number): Promise<number> {
     const rootUserId = await this.findRootUserId();
 
-    return await this.userRepository.count({
+    return await this.userRepository.countBy({
       id: Not(In([rootUserId, uid])),
     });
   }
@@ -266,7 +266,7 @@ export class SysUserService {
    * 查找超管的用户ID
    */
   async findRootUserId(): Promise<number> {
-    const result = await this.userRoleRepository.findOne({
+    const result = await this.userRoleRepository.findOneBy({
       roleId: this.rootRoleId,
     });
     return result.userId;
@@ -373,7 +373,7 @@ export class SysUserService {
    * 判断用户名是否存在
    */
   async exist(username: string) {
-    const user = await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOneBy({ username });
     if (isEmpty(user)) {
       throw new ApiException(10001);
     }
@@ -384,7 +384,7 @@ export class SysUserService {
    * 注册
    */
   async register(param: RegisterInfoDto): Promise<void> {
-    const exists = await this.userRepository.findOne({ username: param.username });
+    const exists = await this.userRepository.findOneBy({ username: param.username });
     if (!isEmpty(exists)) throw new ApiException(10001);
 
     await this.entityManager.transaction(async (manager) => {
@@ -405,7 +405,7 @@ export class SysUserService {
         psalt: salt,
       });
       const result = await manager.save(u);
-      const role = await this.roleRepository.findOne({ value: 'user' });
+      const role = await this.roleRepository.findOneBy({ value: 'user' });
       if (!role) throw new ApiException(10022);
 
       const r = manager.create(SysUserRole, {

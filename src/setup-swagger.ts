@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import fs from 'fs';
 
 export function setupSwagger(app: INestApplication): void {
   const configService: ConfigService = app.get(ConfigService);
-
+  const path = configService.get<string>('swagger.path', 'swagger-ui');
   // 默认为启用
   const enable = configService.get<boolean>('swagger.enable', true);
 
@@ -25,5 +26,9 @@ export function setupSwagger(app: INestApplication): void {
     // include: [ApiModule],
     ignoreGlobalPrefix: false,
   });
-  SwaggerModule.setup(configService.get<string>('swagger.path', 'swagger-ui'), app, document);
+
+  // 导出数据JSON格式，方便导入第三方API接口工具
+  // fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
+
+  SwaggerModule.setup(path, app, document);
 }

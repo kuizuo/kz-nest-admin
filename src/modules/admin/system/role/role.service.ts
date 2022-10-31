@@ -27,7 +27,7 @@ export class SysRoleService {
    * 列举所有角色：除去超级管理员
    */
   async list(): Promise<SysRole[]> {
-    const result = await this.roleRepository.find({
+    const result = await this.roleRepository.findBy({
       // id: Not(this.rootRoleId),
     });
 
@@ -38,7 +38,7 @@ export class SysRoleService {
    * 列举所有角色条数：除去超级管理员
    */
   async count(): Promise<number> {
-    const count = await this.roleRepository.count({
+    const count = await this.roleRepository.countBy({
       id: Not(this.rootRoleId),
     });
     return count;
@@ -48,8 +48,8 @@ export class SysRoleService {
    * 根据角色获取角色信息
    */
   async info(rid: number): Promise<any> {
-    const info = await this.roleRepository.findOne({ id: rid });
-    const roleMenus = await this.roleMenuRepository.find({ roleId: rid });
+    const info = await this.roleRepository.findOneBy({ id: rid });
+    const roleMenus = await this.roleMenuRepository.findBy({ roleId: rid });
     const menus = roleMenus.map((m) => m.menuId);
 
     return { ...info, menus };
@@ -105,7 +105,7 @@ export class SysRoleService {
       remark,
       status,
     });
-    const originMenuRows = await this.roleMenuRepository.find({ roleId });
+    const originMenuRows = await this.roleMenuRepository.findBy({ roleId });
     const originMenuIds = originMenuRows.map((e) => {
       return e.menuId;
     });
@@ -167,10 +167,8 @@ export class SysRoleService {
    * 根据用户id查找角色信息
    */
   async getRoleIdByUser(id: number): Promise<number[]> {
-    const result = await this.userRoleRepository.find({
-      where: {
-        userId: id,
-      },
+    const result = await this.userRoleRepository.findBy({
+      userId: id,
     });
     if (!isEmpty(result)) {
       return map(result, (v) => {
@@ -187,6 +185,6 @@ export class SysRoleService {
     if (includes(ids, this.rootRoleId)) {
       throw new Error('Not Support Delete Root');
     }
-    return await this.userRoleRepository.count({ roleId: In(ids) });
+    return await this.userRoleRepository.countBy({ roleId: In(ids) });
   }
 }

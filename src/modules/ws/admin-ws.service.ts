@@ -71,7 +71,7 @@ export class AdminWSService {
    * 通过menuIds通知用户更新权限菜单
    */
   async noticeUserToUpdateMenusByMenuIds(menuIds: number[]): Promise<void> {
-    const roleMenus = await this.roleMenuRepository.find({
+    const roleMenus = await this.roleMenuRepository.findBy({
       menuId: In(menuIds),
     });
     const roleIds = roleMenus.map((n) => n.roleId);
@@ -82,7 +82,7 @@ export class AdminWSService {
    * 通过roleIds通知用户更新权限菜单
    */
   async noticeUserToUpdateMenusByRoleIds(roleIds: number[]): Promise<void> {
-    const users = await this.userRoleRepository.find({
+    const users = await this.userRoleRepository.findBy({
       roleId: In(roleIds),
     });
     if (users) {
