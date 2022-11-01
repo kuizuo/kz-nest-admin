@@ -7,7 +7,7 @@ export class IpService {
 
   async getAddress(ip: string) {
     const { data } = await this.http.axiosRef.get(
-      `https://api.kuizuo.cn/api/ip_location?ip=${ip}&type=json`,
+      `https://api.kuizuo.cn/api/ip-location?ip=${ip}&type=json`,
     );
     return data.addr;
   }
